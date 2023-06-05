@@ -1,0 +1,27 @@
+﻿@{
+	ViewData["Title"] = "ログイン";
+	Layout = "~/Views/Account/_Layout_Login.cshtml";
+}
+
+<div class="text-center">
+	<h1 class="display-4">ログイン画面</h1>
+
+	<div>
+		<form method="post">
+			<table>
+				<tr>
+					<td><p> ログインネーム</p></td>
+					<td>@Html.TextBox("name", "", new { maxlength = 20 })</td>
+				</tr>
+				<tr>
+					<td><p> パスワード</p></td>
+					<td>@Html.TextBox("pass", "", new { maxlength = 20 })</td>
+				</tr>
+
+			</table>
+				<button type="submit">ログイン</button>
+		</form>
+	</div>
+
+	
+</div>

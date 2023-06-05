@@ -1,0 +1,24 @@
+﻿@{
+	ViewData["Title"] = "Test";
+	Layout = "~/Views/Account/_Layout_Login.cshtml";
+}
+
+<div class="text-center">
+	<h1 class="display-4">ログイン失敗</h1>
+
+	
+	<table>
+		<tr>
+			<td>ログインネーム</td>
+			<td>@ViewData["name"]</td>
+		</tr>
+		<tr>
+			<td>パスワード</td>
+			<td>@ViewData["pass"]</td>
+		</tr>
+
+	</table>
+		
+	<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">ログイン画面へ戻る</a>
+	
+</div>
