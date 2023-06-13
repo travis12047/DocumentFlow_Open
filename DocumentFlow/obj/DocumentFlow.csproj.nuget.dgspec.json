@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DocumentFlow_0605\\DocumentFlow.csproj": {}
+    "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\DocumentFlow.csproj": {}
   },
   "projects": {
-    "D:\\DocumentFlow_0605\\DocumentFlow.csproj": {
+    "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\DocumentFlow.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DocumentFlow_0605\\DocumentFlow.csproj",
+        "projectUniqueName": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\DocumentFlow.csproj",
         "projectName": "DocumentFlow",
-        "projectPath": "D:\\DocumentFlow_0605\\DocumentFlow.csproj",
+        "projectPath": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\DocumentFlow.csproj",
         "packagesPath": "C:\\Users\\roots\\.nuget\\packages\\",
-        "outputPath": "D:\\DocumentFlow_0605\\obj\\",
+        "outputPath": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

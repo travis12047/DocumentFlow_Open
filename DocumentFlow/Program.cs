@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -60,15 +61,30 @@ builder.Services.AddControllers(options =>
 
 var app = builder.Build();
 
+// 2023-06-13 iwai Mod
+// Apache 搭載の Linux での ASP.NET Core ホスト対応
 // Configure the HTTP request pipeline.
+//if (!app.Environment.IsDevelopment())
+//{
+//	app.UseExceptionHandler("/Home/Error");
+//	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//	app.UseHsts();
+//}
+
+//app.UseHttpsRedirection();
 if (!app.Environment.IsDevelopment())
 {
-	app.UseExceptionHandler("/Home/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-	app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
+// 2023-06-13 iwai Add
+// Apache 搭載の Linux での ASP.NET Core ホスト対応
+// using Microsoft.AspNetCore.HttpOverrides;
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.UseStaticFiles();
 
 app.UseRouting();

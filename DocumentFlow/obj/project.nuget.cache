@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6O3wF28yffKTG5+MU/8gTQfqyjtg/MK04aPrNj+8W/uf/GFDgGCjCGI8JxTFEt7XQFNFe7DA99gZuQPAC9S8CQ==",
+  "dgSpecHash": "DcZ9stTm9i2+WdXzI0Z7mguoezEKA7BbC7TDTyMDSk25yGRfIMO7dnoFGFuIuGDnexc50QvW9j2p1FutZ+UDEg==",
   "success": true,
-  "projectFilePath": "D:\\DocumentFlow_0605\\DocumentFlow.csproj",
+  "projectFilePath": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\DocumentFlow.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\roots\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\roots\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

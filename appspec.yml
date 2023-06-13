@@ -1,18 +1,23 @@
 version: 0.0
 os: linux
 files:
-  - source: DocumentFlow/
+  - source: /
     destination: /var/www/DocumentFlow
 hooks:
   BeforeInstall:
-    - location: scripts/install_dependencies.sh
+    - location: serverscripts/install_dependencies.sh
       timeout: 300
       runas: root
-    - location: scripts/start_server.sh
+    - location: serverscripts/start_server.sh
       timeout: 300
       runas: root
   ApplicationStop:
-    - location: scripts/stop_server.sh
+    - location: serverscripts/stop_server.sh
       timeout: 300
       runas: root
+    - location: deployscripts/dotnetstop.sh
+      runas: root
+  ApplicationStart:
+    - location: deployscripts/dotnetstart.sh
+      runas: centos
 
