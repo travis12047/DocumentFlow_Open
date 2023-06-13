@@ -5,13 +5,13 @@ phases:
       - dotnet --version
   pre_build:
     commands:
-      - dotnet clean -c Release  # プロジェクトのクリーンアップ
+      - dotnet clean -c Release ~/DocumentFlow  # プロジェクトのクリーンアップ
   build:
     commands:
-      - dotnet build -c Release  # プロジェクトのビルド
+      - dotnet build -c Release ~/DocumentFlow # プロジェクトのビルド
   post_build:
     commands:
-      - dotnet publish -c Release  # プロジェクトの発行
+      - dotnet publish -c Release ~/DocumentFlow # プロジェクトの発行
 artifacts:
   files:
     - '**/*'  # ベースディレクトリで指定されたディレクトリ配下を全て出力する
