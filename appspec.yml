@@ -19,5 +19,5 @@ hooks:
       runas: root
   ApplicationStart:
     - location: deployscripts/dotnetstart.sh
-      runas: centos
+      runas: root
 
