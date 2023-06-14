@@ -3,6 +3,7 @@ phases:
   install:
     commands:
       - dotnet --version
+      - dotnet restore # 2003/06/14 add
   pre_build:
     commands:
       - dotnet clean -c Release DocumentFlow/DocumentFlow.sln  # プロジェクトのクリーンアップ
