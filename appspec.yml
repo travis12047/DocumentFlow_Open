@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /
+  - source: /DocumentFlow
     destination: /var/www/DocumentFlow
 hooks:
   BeforeInstall:
