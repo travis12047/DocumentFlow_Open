@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Net;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
@@ -59,6 +60,30 @@ builder.Services.AddControllers(options =>
 	options.Filters.Add(authFilter);
 });
 
+// 2023-06-16 iwai Add
+// Https通信対応
+if (!builder.Environment.IsDevelopment())
+{
+	builder.Services.AddHsts(options =>
+	{
+		options.Preload = true;
+		options.IncludeSubDomains = true;
+		options.MaxAge = TimeSpan.FromDays(60);
+		options.ExcludedHosts.Add("learning-documentflow.net");
+		options.ExcludedHosts.Add("www.learning-documentflow.net");
+	});
+
+	builder.Services.AddHttpsRedirection(options =>
+	{
+		options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+		options.HttpsPort = 443;
+	});
+}
+// 2023-06-16 iwai Add
+// EC2ヘルスチェック対応
+builder.Services.AddHealthChecks();
+
+
 var app = builder.Build();
 
 // 2023-06-13 iwai Mod
@@ -75,6 +100,9 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
+	// 2023-06-16 iwai Add
+	// Https通信対応
+	app.UseHsts();
 }
 
 // 2023-06-13 iwai Add
@@ -102,5 +130,10 @@ app.MapControllerRoute(
 	//pattern: "{controller=Login}/{action=Login}/{id?}");
 	pattern: "{controller=Account}/{action=Login}/{id?}");
 //pattern: "{controller=DocCreate}/{action=Create}/{id?}");
+
+
+// 2023-06-16 iwai Add
+// EC2ヘルスチェック対応
+app.MapHealthChecks("/");
 
 app.Run();
