@@ -15,9 +15,3 @@ hooks:
     - location: serverscripts/stop_server.sh
       timeout: 300
       runas: root
-    - location: deployscripts/dotnetstop.sh
-      runas: root
-  ApplicationStart:
-    - location: deployscripts/dotnetstart.sh
-      runas: root
-
