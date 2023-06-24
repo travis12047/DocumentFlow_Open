@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlow.Controllers
 {
+	// 2023-06-24 Add 画面遷移エラーの検証
+	[AllowAnonymous]
 	public class DocSearchController : Controller
 	{
+		// 2023-06-24 Add 画面遷移エラーの検証
+		// GET: DocSearchController
+		public ActionResult Search()
+		{
+			return View();
+		}
 		// GET: DocSearchController
 		public ActionResult Index()
 		{

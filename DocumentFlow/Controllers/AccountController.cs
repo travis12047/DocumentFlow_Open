@@ -34,24 +34,27 @@ namespace DocumentFlow.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(string name, string pass)
 		{
-			//ユーザーネームとパスワードの組み合わせ情報の確認
-			String userId = AccountModel.GetUserId(name, pass);
-			if (userId == null || userId.Equals(""))
-			{
-				//確認できない場合
-				ViewData["name"] = name;
-				ViewData["pass"] = pass;
-				return View("LoginFail", "Account");
-			}
-			else
-			{
-				//return RedirectToAction("Index", "Home");
-				//return RedirectToAction("Create", "DocCreate");
-				//確認できた場合、nameとUserIDを私用してサインインを行う
-				SignInExecute(name, userId);
-				return RedirectToAction("Create", "DocCreate");
-				//return RedirectToAction(nameof(DocCreateController.Create), "DocCreate");
-			}
+			// 2023-06-24 Add 画面遷移エラーの検証
+			return RedirectToAction("Search", "DocSearch");
+
+			////ユーザーネームとパスワードの組み合わせ情報の確認
+			//String userId = AccountModel.GetUserId(name, pass);
+			//if (userId == null || userId.Equals(""))
+			//{
+			//	//確認できない場合
+			//	ViewData["name"] = name;
+			//	ViewData["pass"] = pass;
+			//	return View("LoginFail", "Account");
+			//}
+			//else
+			//{
+			//	//return RedirectToAction("Index", "Home");
+			//	//return RedirectToAction("Create", "DocCreate");
+			//	//確認できた場合、nameとUserIDを私用してサインインを行う
+			//	SignInExecute(name, userId);
+			//	return RedirectToAction("Create", "DocCreate");
+			//	//return RedirectToAction(nameof(DocCreateController.Create), "DocCreate");
+			//}
 		}
 
 		/// <summary>
