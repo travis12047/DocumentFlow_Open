@@ -4,11 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlow.Controllers
 {
-	// 2023-06-24 Add 画面遷移エラーの検証
-	[AllowAnonymous]
 	public class DocSearchController : Controller
 	{
-		// 2023-06-24 Add 画面遷移エラーの検証
+		// 2023-06-24 Add
 		// GET: DocSearchController
 		public ActionResult Search()
 		{

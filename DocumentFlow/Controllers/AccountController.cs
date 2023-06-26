@@ -46,12 +46,9 @@ namespace DocumentFlow.Controllers
 			}
 			else
 			{
-				//return RedirectToAction("Index", "Home");
-				//return RedirectToAction("Create", "DocCreate");
 				//確認できた場合、nameとUserIDを私用してサインインを行う
 				SignInExecute(name, userId);
 				return RedirectToAction("Create", "DocCreate");
-				//return RedirectToAction(nameof(DocCreateController.Create), "DocCreate");
 			}
 		}
 

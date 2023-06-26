@@ -15,9 +15,6 @@ namespace DocumentFlow.Models.DB
 		/// <returns>実行結果(空の場合もあり)</returns>
 		public static DataTable Execute(String sql)
 		{
-			//var pkFile = new PrivateKeyFile("~/.ssh/documentflow-ec2.pem", "");
-			//var pkFile = new PrivateKeyFile(@"D:\documentflow-ec2.pem", "");
-			//var pkFile = new PrivateKeyFile(@"C:\Users\grgg1\Desktop\documentflow-ec2.pem", "");
 			var pkFile = new PrivateKeyFile("documentflow-ec2.pem", "");
 			DataTable tbl = new DataTable("tbl");
 
