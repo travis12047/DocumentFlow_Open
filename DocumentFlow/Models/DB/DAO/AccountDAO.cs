@@ -4,7 +4,7 @@ using System.Data;
 namespace DocumentFlow.Models.DB.DAO
 {
 	/// <summary>
-	/// DocCreate機能のDAOクラス
+	/// Account機能のDAOクラス
 	/// </summary>
 	public class AccountDAO
 	{

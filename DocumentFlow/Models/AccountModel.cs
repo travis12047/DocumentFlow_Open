@@ -14,30 +14,6 @@ namespace DocumentFlow.Models
 	public class AccountModel
 	{
 		/// <summary>
-		/// ユーザーネームとパスワードの組み合わせ情報の存在確認
-		/// </summary>
-		/// <param name="name">ユーザーネーム</param>
-		/// <param name="pass">パスワード</param>
-		/// <returns>確認フラグ</returns>
-		//public static Boolean DoAccount(string name, string pass)
-		//{
-
-		//	Boolean userCheck;
-
-		//	int getUser = AccountDAO.UserCheck(name, pass);
-
-		//	if (getUser == 1)
-		//	{
-		//		userCheck = true;
-		//	}
-		//	else
-		//	{
-		//		userCheck = false;
-		//	}
-		//	return userCheck;
-		//}
-
-		/// <summary>
 		/// ユーザー名とパスワードの組み合わせが一意の場合、UserIDを返す
 		/// </summary>
 		/// <param name="name">ユーザーネーム</param>

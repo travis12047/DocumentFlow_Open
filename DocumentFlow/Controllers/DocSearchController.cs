@@ -1,90 +1,37 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using DocumentFlow.Models;
 using Microsoft.AspNetCore.Mvc;
+using DocumentFlow.Models.ViewModels;
 
 namespace DocumentFlow.Controllers
 {
-	public class DocSearchController : Controller
+    /// <summary>
+    /// ドキュメント検索画面のコントローラー
+    /// </summary>
+    public class DocSearchController : Controller
 	{
-		// 2023-06-24 Add
-		// GET: DocSearchController
-		public ActionResult Search()
+		/// <summary>
+		/// 検索画面の表示
+		/// </summary>
+		/// <param name="limitNumList">表示件数プルダウンの値</param>
+		/// <param name="searchCondApprovalStatusList">承認状況ラジオボタンの値</param>
+		/// <param name="pageNum">画面で表示中のページ番号</param>
+		/// <param name="limitNum">表示件数</param>
+		/// <param name="searchCondApprovalStatus">承認状況</param>
+		/// <param name="searchCondTitle">タイトルTextBoxの内容</param>
+		/// <returns>検索画面</returns>
+		public ActionResult Search(
+		//初期表示、検索処理実行時に使用される引数
+		string limitNumList, string searchCondApprovalStatusList,
+		//ページリンク押下時に使用される引数
+		string pageNum, string limitNum, string searchCondApprovalStatus,
+		//全ての処理で使用される引数
+		string searchCondTitle)
 		{
+			DocSearchViewModel docSearchViewModel = new DocSearchViewModel();
+			docSearchViewModel = DocSearchModel.CreateViewModel(docSearchViewModel, limitNumList, searchCondApprovalStatusList, pageNum, limitNum, searchCondApprovalStatus, searchCondTitle);
+			ViewData.Model = docSearchViewModel;
+			ViewBag.limitNumList = docSearchViewModel.limitNumList;
 			return View();
-		}
-		// GET: DocSearchController
-		public ActionResult Index()
-		{
-			return View();
-		}
-
-		// GET: DocSearchController/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
-
-		// GET: DocSearchController/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
-
-		// POST: DocSearchController/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: DocSearchController/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		// POST: DocSearchController/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: DocSearchController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
-
-		// POST: DocSearchController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
 		}
 	}
 }

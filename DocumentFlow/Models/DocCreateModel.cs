@@ -15,7 +15,6 @@ namespace DocumentFlow.Models
 	/// </summary>
 	public class DocCreateModel
 	{
-
 		/// <summary>
 		/// 画面の情報を基にドキュメントを作成する
 		/// </summary>
@@ -35,22 +34,53 @@ namespace DocumentFlow.Models
 
         }
 
-        /// <summary>
-        /// 画面表示に必要なViewModelの作成
-        /// </summary>
-        /// <param name="viewModel">viewModel</param>
-        /// <returns>項目設定済みのviewModel</returns>
-        public static DocCreateViewModel CreateViewModel(DocCreateViewModel viewModel)
+		/// <summary>
+		/// 画面表示に必要なViewModelの作成
+		/// </summary>
+		/// <param name="viewModel">viewModel</param>
+		/// <returns>項目設定済みのviewModel</returns>
+		public static DocCreateViewModel CreateViewModel(DocCreateViewModel viewModel)
 		{
-			
 			//承認フロー選択に関する画面項目の作成
 			DataTable approvalFlowDt = DocCreateDAO.GetApprovalFlow();
 			viewModel.selectListItems = CreateSelectBox(approvalFlowDt);
-            viewModel.approvalUserNameCombo = CreateApprovalUserNameCombo(approvalFlowDt);
-            viewModel.approvalFlowCombo = CreateApprovalFlowComb(approvalFlowDt);
-            //viewModel = CreateApprovalFlowComb(approvalFlowDt);
+			viewModel.approvalUserNameCombo = CreateApprovalUserNameCombo(approvalFlowDt);
+			viewModel.approvalFlowCombo = CreateApprovalFlowComb(approvalFlowDt);
+			//viewModel = CreateApprovalFlowComb(approvalFlowDt);
 
-            return viewModel;
+			return viewModel;
+		}
+
+		/// <summary>
+		/// ドキュメントIDに紐づく文書情報を取得・設定する
+		/// </summary>
+		/// <param name="viewModel">viewModel</param>
+		/// <param name="documentId">ドキュメントID</param>
+		/// <returns>文書情報をセット済みのviewModel</returns>
+		public static DocCreateViewModel GetCreatedDoc(DocCreateViewModel viewModel, string documentId)
+		{
+			if (!string.IsNullOrEmpty(documentId))
+			{
+				DataTable documentDataDt = DocCreateDAO.GetCreatedDoc(documentId);
+				List<ArrayList> documentDataList = DAO_Master.DataTableToListType(documentDataDt);
+
+				var config = new MapperConfiguration(cfg =>
+				{
+					cfg.AddProfile<AutoMapperConfig>();
+				});
+
+				var mapper = config.CreateMapper();
+
+				var mapperList = mapper.Map<List<ArrayList>, List<CreatedDocDTO>>(documentDataList);
+
+				//文書情報を設定してください
+				viewModel.docTitle = mapperList[0].m_document_title;
+				viewModel.docContent = mapperList[0].m_document_content;
+				//作成済みドキュメントフラグをアクティブにする
+				viewModel.createdFlg = true;
+			}
+
+			return viewModel;
 		}
 
 		/// <summary>
@@ -155,6 +185,7 @@ namespace DocumentFlow.Models
 
                     idRow++;
                 }
+                //詳細情報Listへユーザ名を追加
                 detail.Add(mapperList[i].m_user_name);
             }
             //最後のフローID単位の詳細情報Listをここで追加
@@ -224,8 +255,9 @@ namespace DocumentFlow.Models
                     detail = new List<ApprovalFlowDTO>();
 
                     idRow++;
-                }
-                detail.Add(mapperList[i]);
+				}
+				//詳細情報Listへユーザ名を追加
+				detail.Add(mapperList[i]);
             }
             //最後のフローID単位の詳細情報Listをここで追加
             combo.Add(detail);

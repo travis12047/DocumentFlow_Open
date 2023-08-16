@@ -1,30 +1,124 @@
-﻿@model IEnumerable<DocumentFlow.Models.ViewModels.DocSearchViewModel>
+﻿@model DocumentFlow.Models.ViewModels.DocSearchViewModel
 
 @{
-    ViewData["Title"] = "Search";
+	ViewData["Title"] = "Search";
+	
+	var searchResults = Model.searchResults;
+	var pageLastNum = Model.pageLastNum;
+	var pageIndexNum = Model.pageIndexNum;
+	var limitNum = Model.limitNum;
+	var maxPageNum = Model.maxPageNum;
+	var minPageNum = Model.minPageNum;
+	var searchCondTitle = Model.searchCondTitle;
+	var searchCondApprovalStatus = Model.searchCondApprovalStatus;
+	var searchCondApprovalStatusList = Model.searchCondApprovalStatusList;
 }
 
 <h1>DocCreate</h1>
-@*
-<p>
-    <a asp-action="Search">Search New</a>
-</p>
-*@
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-@*    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+
+<form asp-action="Search" name="searchForm" method="post">
+	@*
+	/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+		検索条件設定エリア
+	/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+	*@
+	<p>
+		タイトル：<br>
+		<input type="text" asp-for="searchCondTitle" style="width:60%;">
+	</p>
+	@*承認状況指定ラジオボタン*@
+	@foreach (var i in Model.searchCondApprovalStatusList)
+	{
+		<input type="radio" asp-for="searchCondApprovalStatusList" id="@i.id" value="@i.id" checked="@i.Selected" />
+			@i.caption
+		<br />
+	}
+	@*表示件数指定プルダウン*@
+	@Html.DropDownList("limitNumList")
+	<input type="submit" name="Search" value="検索" class="btn btn-primary" />
+</form>
+@{
+	//ページリンク作成エリア
+	for (int i = minPageNum; i < maxPageNum; i++)
+	{
+		//表示中のページの場合、テキストとして表示
+		if (i == pageIndexNum)
+		{
+			@i
+		}
+		//上記以外の場合、リンクとして表示
+		else
+		{
+			<a asp-action="Search"
+				asp-route-pageNum=@i
+				asp-route-limitNum=@limitNum
+				asp-route-searchCondTitle=@searchCondTitle
+				asp-route-searchCondApprovalStatus=@searchCondApprovalStatus>
+				@i
+			</a>
+		}
+	}
 }
-    </tbody>*@
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				ID
+			</th>
+			<th>
+				タイトル
+			</th>
+			<th>
+				申請者
+			</th>
+			<th>
+				承認待ち状況
+			</th>
+			<th>
+				完了日
+			</th>
+			<th>
+				作成日時
+			</th>
+			<th>
+				更新日時
+			</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach (var item in searchResults)
+		{
+		<tr>
+			<td>
+					@item.document_id
+			</td>
+			<td>
+					<a 
+						asp-controller="DocCreate"
+						asp-action="ViewCreatedDoc"
+						asp-route-documentId=@item.document_id>
+						@item.document_title
+					</a>
+			</td>
+			<td>
+					@item.create_user_name
+			</td>
+			<td>
+					@item.approval_status
+			</td>
+			<td>
+					@item.completion_at
+			</td>
+			<td>
+					@item.createddata
+			</td>
+			<td>
+					@item.updatedata
+			</td>
+		</tr>
+		}
+	</tbody>
 </table>
+

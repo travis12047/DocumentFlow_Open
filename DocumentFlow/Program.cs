@@ -26,7 +26,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 });
 // 2023-06-04 iwai Add
 // クッキー認証対応
-builder.Services.Configure<RouteOptions>(options => {
+builder.Services.Configure<RouteOptions>(options =>
+{
 	// URLは小文字にする
 	options.LowercaseUrls = true;
 });
@@ -40,7 +41,8 @@ builder.Services
 		//})
 		//.AddCookie();.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 		.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-		.AddCookie(options => {
+		.AddCookie(options =>
+		{
 			// クッキーの名前を変える
 			options.Cookie.Name = "auth";
 
@@ -80,7 +82,7 @@ var app = builder.Build();
 //app.UseHttpsRedirection();
 if (!app.Environment.IsDevelopment())
 {
-    app.UseHttpsRedirection();
+	app.UseHttpsRedirection();
 }
 
 // 2023-06-13 iwai Add
@@ -88,7 +90,7 @@ if (!app.Environment.IsDevelopment())
 // using Microsoft.AspNetCore.HttpOverrides;
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+	ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
 app.UseStaticFiles();
@@ -104,29 +106,24 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	//pattern: "{controller=Home}/{action=Index}/{id?}");
-	//pattern: "{controller=Login}/{action=Login}/{id?}");
 	pattern: "{controller=Account}/{action=Login}/{id?}");
-//pattern: "{controller=DocCreate}/{action=Create}/{id?}");
 
 // 2023-06-16 iwai Add
 // EC2ヘルスチェック対応
-app.
-	MapHealthChecks("/healthz", new HealthCheckOptions
-	{
-	    ResultStatusCodes =
-	    {
-	        [HealthStatus.Healthy] = StatusCodes.Status200OK,
-	        [HealthStatus.Degraded] = StatusCodes.Status200OK,
-	        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-	    }
-	})
-    .RequireHost("*:5001");
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+	ResultStatusCodes =
+		{
+			[HealthStatus.Healthy] = StatusCodes.Status200OK,
+			[HealthStatus.Degraded] = StatusCodes.Status200OK,
+			[HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+		}
+}).RequireHost("*:5001");
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHealthChecks("/healthz");
-    endpoints.MapControllers();
+	endpoints.MapHealthChecks("/healthz");
+	endpoints.MapControllers();
 });
 
 app.Run();

@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Collections;
-using System.Data;
+﻿using System.Data;
 
 namespace DocumentFlow.Models.DB.DAO
 {
@@ -9,23 +7,6 @@ namespace DocumentFlow.Models.DB.DAO
 	/// </summary>
 	public class DocCreateDAO
 	{
-        ///// <summary>
-        ///// 画面の情報を基にドキュメント作成時に必要なDBへ登録する
-        ///// </summary>
-        ///// <param name="docTitle">タイトル</param>
-        ///// <param name="docContent">内容</param>
-        ///// <param name="userId">ユーザID</param>
-        ///// <param name="selectFlow">フローID</param>
-        //public static void Create(string docTitle, string docContent, string userId, string selectFlow)
-        //{
-        //    //画面の情報を基にドキュメントマスタへデータを登録
-        //    DocCreate(docTitle, docContent, userId, selectFlow);
-
-
-
-
-        //}
-
         /// <summary>
         /// ドキュメントマスタへデータを登録する
         /// </summary>
@@ -90,7 +71,6 @@ namespace DocumentFlow.Models.DB.DAO
 			" and temp_user.m_user_delete_at is null " +
 			"order by temp_approval.m_approval_flow_id, temp_approval.m_approval_flow_order";
 			DataTable sqlResult = DAO_Master.Execute(sql);
-			List<ArrayList> dataTableToList = DAO_Master.DataTableToListType(sqlResult);
 
 			return sqlResult;
 
@@ -119,6 +99,33 @@ namespace DocumentFlow.Models.DB.DAO
                 "    from m_approval_flow where m_approval_flow_id = '" + selectFlow + "' " +
                 ";";
             DataTable sqlResult = DAO_Master.Execute(sql);
-        }
-    }
+		}
+
+		/// <summary>
+		/// ドキュメント情報を取得する
+		/// </summary>
+		/// <param name="documentId">ドキュメントID</param>
+		/// <returns>ドキュメント情報</returns>
+		public static DataTable GetCreatedDoc(string documentId)
+		{
+			String sql =
+			"select " +
+            "	m_document_id, " +
+            "	m_document_title, " +
+            "	m_document_content, " +
+            "	m_document_create_user_id, " +
+            "	m_document_approvalflow_id, " +
+            "	m_document_approvalflow_current_order, " +
+            "	m_document_completion_at, " +
+            "	m_document_management_deleted_at, " +
+            "	m_document_createddata, " +
+            "	m_document_updatedata " +
+            "from m_document " +
+            "where m_document_id = '" + documentId + "';";
+			DataTable sqlResult = DAO_Master.Execute(sql);
+
+			return sqlResult;
+
+		}
+	}
 }

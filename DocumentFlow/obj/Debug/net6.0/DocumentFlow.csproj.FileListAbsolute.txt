@@ -262,3 +262,7 @@ F:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\obj\Debug\net6.0\refint\Docum
 F:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\obj\Debug\net6.0\DocumentFlow.pdb
 F:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\obj\Debug\net6.0\DocumentFlow.genruntimeconfig.cache
 F:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\obj\Debug\net6.0\ref\DocumentFlow.dll
+D:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\bin\Debug\net6.0\PagedList.dll
+D:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\bin\Debug\net6.0\PagedList.Mvc.dll
+F:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\bin\Debug\net6.0\PagedList.dll
+F:\PortableGit\WorkSpace\DocumentFlow\DocumentFlow\bin\Debug\net6.0\PagedList.Mvc.dll

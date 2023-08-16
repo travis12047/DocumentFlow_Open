@@ -5,9 +5,11 @@ using System.Collections;
 
 namespace DocumentFlow.Models.DB
 {
+	/// <summary>
+	/// DBサーバとのやり取りを実行するクラス
+	/// </summary>
 	public class DAO_Master
 	{
-
 		/// <summary>
 		/// データベースにSQLを実行する
 		/// </summary>
