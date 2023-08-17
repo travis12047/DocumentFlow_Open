@@ -13,25 +13,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-// 2023-04-10 iwai Add
+// 2023-04-10 Add
 // AutoMapper対応
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// 2023-05-16 iwai Add
+// 2023-05-16 Add
 // クッキー認証対応
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
 	options.Secure = CookieSecurePolicy.Always;
 	options.HttpOnly = HttpOnlyPolicy.Always;
 });
-// 2023-06-04 iwai Add
+// 2023-06-04 Add
 // クッキー認証対応
 builder.Services.Configure<RouteOptions>(options =>
 {
 	// URLは小文字にする
 	options.LowercaseUrls = true;
 });
-// 2023-06-04 iwai Mod
+// 2023-06-04 Mod
 // クッキー認証対応
 builder.Services
 		//.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -50,11 +50,11 @@ builder.Services
 			// ~/Account/Login =＞ ~/account/login
 			options.LoginPath = CookieAuthenticationDefaults.LoginPath.ToString().ToLower();
 		});
-// 2023-05-25 iwai Add
+// 2023-05-25 Add
 // HTML文字化け対応
 builder.Services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 
-// 2023-05-16 iwai Add
+// 2023-05-16 Add
 // Authorize(承認機能)対応
 builder.Services.AddControllers(options =>
 {
@@ -63,13 +63,13 @@ builder.Services.AddControllers(options =>
 	options.Filters.Add(authFilter);
 });
 
-// 2023-06-16 iwai Add
+// 2023-06-16 Add
 // EC2ヘルスチェック対応
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-// 2023-06-13 iwai Mod
+// 2023-06-13 Mod
 // Apache 搭載の Linux での ASP.NET Core ホスト対応
 // Configure the HTTP request pipeline.
 //if (!app.Environment.IsDevelopment())
@@ -85,7 +85,7 @@ if (!app.Environment.IsDevelopment())
 	app.UseHttpsRedirection();
 }
 
-// 2023-06-13 iwai Add
+// 2023-06-13 Add
 // Apache 搭載の Linux での ASP.NET Core ホスト対応
 // using Microsoft.AspNetCore.HttpOverrides;
 app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -97,7 +97,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// 2023-05-16 iwai Add
+// 2023-05-16 Add
 // クッキー認証対応
 app.UseCookiePolicy();
 app.UseAuthentication();
@@ -108,7 +108,7 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Account}/{action=Login}/{id?}");
 
-// 2023-06-16 iwai Add
+// 2023-06-16 Add
 // EC2ヘルスチェック対応
 app.MapHealthChecks("/healthz", new HealthCheckOptions
 {
