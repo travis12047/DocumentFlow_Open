@@ -1,7 +1,5 @@
 ﻿using System.Data;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace DocumentFlow.Models.DB.DAO
 {
@@ -41,13 +39,12 @@ namespace DocumentFlow.Models.DB.DAO
             "on approval_flow.m_approval_flow_m_user_id = approvalflow_current_user.m_user_id " +
             //ドキュメントが削除されていないものを取得する
             "where base.m_document_management_deleted_at is null ";
-			////表示件数を指定
-			//"order by base.m_document_id " +
-			//"LIMIT "+ limitStart + ", "+ limitEnd  +
 
-			// 検索条件に「タイトル」の内容を追加する
+			//検索条件に「タイトル」の内容を追加する
 			sql += AddSearchCondTitle(searchCondTitleList);
 
+            //デフォルトの並び順は更新日時の降順とする
+			sql += "order by base.m_document_updatedata desc ";
 			sql += "; ";
 
 

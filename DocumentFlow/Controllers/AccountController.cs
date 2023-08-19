@@ -46,7 +46,8 @@ namespace DocumentFlow.Controllers
 			{
 				//確認できた場合、nameとUserIDを使用してサインインを行う
 				SignInExecute(name, userId);
-                return RedirectToAction("Search", "DocSearch");
+                //return RedirectToAction("Search", "DocSearch");
+                return RedirectToAction("Create", "DocCreate");
             }
 		}
 
