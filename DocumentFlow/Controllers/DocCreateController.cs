@@ -1,5 +1,5 @@
 ﻿using DocumentFlow.Models;
-using DocumentFlow.Models.ViewModel;
+using DocumentFlow.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentFlow.Controllers
@@ -41,10 +41,10 @@ namespace DocumentFlow.Controllers
 		/// <param name="docTitle">タイトル</param>
 		/// <param name="docContent">内容</param>
 		/// <param name="selectFlow">選択されたフロー</param>
-		/// <returns>ドキュメント作成画面</returns>
+		/// <returns>作成完了画面</returns>
 		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection, string docTitle, string docContent, string selectFlow)
+        //[AutoValidateAntiforgeryToken]
+        public ActionResult Create(IFormCollection collection, string docTitle, string docContent, string selectFlow)
 		{
 			DocCreateViewModel docCreateViewModel = new DocCreateViewModel();
 			try
@@ -56,10 +56,7 @@ namespace DocumentFlow.Controllers
 			catch
 			{
 			}
-			//ドキュメント作成画面の表示
-			docCreateViewModel = DocCreateModel.CreateViewModel(docCreateViewModel);
-			ViewData.Model = docCreateViewModel;
-			return View();
+			return View("CreateComplete");
 		}
 	}
 }

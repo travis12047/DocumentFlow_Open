@@ -1,26 +1,40 @@
-﻿@{
-	ViewData["Title"] = "ログイン";
+﻿@model DocumentFlow.Models.ViewModels.AccountViewModel
+
+@{
+	ViewData["Title"] = "DocumentFlow ログイン";
 	Layout = "~/Views/Account/_Layout_Login.cshtml";
 }
 
 <div class="text-center">
-	<h1 class="display-4">ログイン画面</h1>
+	<br>
+	<h1 class="display-4 mb-3">Document Flow</h1>
+	<h4 class="mb-3">ログイン画面</h4>
 
-	<div>
-		<form method="post">
-			<table>
-				<tr>
-					<td><p> ログインネーム</p></td>
-					<td>@Html.TextBox("name", "", new { maxlength = 20 })</td>
-				</tr>
-				<tr>
-					<td><p> パスワード</p></td>
-					<td>@Html.TextBox("pass", "", new { maxlength = 20 })</td>
-				</tr>
+	<div class="text-center">
+		<form asp-action="Login" name="loginForm" method="post" novalidate>
+			<div asp-validation-summary="ModelOnly" class="text-danger" style="list-style-position:inside;"></div>
 
-			</table>
-				<button type="submit">ログイン</button>
+			@*エラーメッセージ表示*@
+			<span asp-validation-for="name" class="text-danger"></span>
+			<div class="col-form-label-lg">
+				@Html.LabelFor(model => model.name)
+				@Html.TextBoxFor(model => model.name)
+			</div>
+
+			@*エラーメッセージ表示*@
+			<span asp-validation-for="pass" class="text-danger"></span>
+			<div class="col-form-label-lg">
+				@Html.LabelFor(model => model.pass)
+				@Html.TextBoxFor(model => model.pass)
+			</div>
+			<input type="submit" value="ログイン" class="btn btn-primary" />
 		</form>
 	</div>
 	
 </div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

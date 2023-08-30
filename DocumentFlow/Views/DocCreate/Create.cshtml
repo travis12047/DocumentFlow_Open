@@ -1,133 +1,199 @@
-﻿@model DocumentFlow.Models.ViewModel.DocCreateViewModel
+﻿@model DocumentFlow.Models.ViewModels.DocCreateViewModel
 
 @{
-    ViewData["Title"] = "DocCreate";
-    
-    var selectListItems = Model.selectListItems;
-    var approvalUserNameCombo = Model.approvalUserNameCombo;
-    var createdFlg = Model.createdFlg;
+	ViewData["Title"] = "DocumentFlow 作成";
+
+	var selectListItems = Model.selectListItems;
+	var approvalUserNameCombo = Model.approvalUserNameCombo;
+	var createdFlg = Model.createdFlg;
 
 }
 
 <script>
 
-    //SelectBoxで選択されている
-    //フロー名のフローIDに紐づく詳細情報(ユーザ情報)を表示
-    function ChangeList() {
+	//SelectBoxで選択されている
+	//フロー名のフローIDに紐づく詳細情報(ユーザ情報)を表示
+	function ChangeList() {
 
-        let userTable = document.getElementById("approvalFlowComboTable");
-        
-        //詳細情報(ユーザ情報)が表示されている場合削除
-        if(userTable.firstElementChild != null){
-            let remove_element = userTable.removeChild(userTable.firstElementChild);
-        }
+		let userTable = document.getElementById("approvalFlowComboTable");
 
-        //SelectBoxの選択項目が空かどうか確認
-        let selectList = document.getElementById("selectList");
-        var flowId = selectList.value;
-        if(!(flowId == null || flowId == "")){
+		//詳細情報(ユーザ情報)が表示されている場合削除
+		if (userTable.firstElementChild != null) {
+			let remove_element = userTable.removeChild(userTable.firstElementChild);
+		}
 
-            //フロー名のフローIDに紐づく詳細情報(ユーザ情報)を
-            //フローID単位で配列化
-            var userNameCombo = null;
-            var userNameDetail = null;
-            userNameCombo = [];
-            @{
-                foreach(var userNameDetail in approvalUserNameCombo)
-                {
-                    @:userNameDetail = [];
-                    foreach (var userName in userNameDetail)
-                    {
-                        
-                        @:userNameDetail.push('@userName');
-                    }
-                    @:userNameCombo.push(userNameDetail);
-                }
-            }
-            
-            //SelectBoxで選択されている
-            //フロー名のフローIDに紐づく詳細情報(ユーザ情報)を表示
-            var userTableTbody = userTable.createTBody();
-            
-            var newRow  = null;
-            var newCell = null;
-            var newText = null;
+		//SelectBoxの選択項目が空かどうか確認
+		let selectList = document.getElementById("selectList");
+		var flowId = selectList.value;
+		if (!(flowId == null || flowId == "")) {
 
-            var selected = selectList.selectedIndex;
-            selected--;
-            for(var i = 0; i < userNameCombo[selected].length; i++){
-            
-                newRow  = null;
-                newCell = null;
-                newText = null;
+			//フロー名のフローIDに紐づく詳細情報(ユーザ情報)を
+			//フローID単位で配列化
+			var userNameCombo = null;
+			var userNameDetail = null;
+			userNameCombo = [];
+			@{
+			foreach (var userNameDetail in approvalUserNameCombo)
+			{
+				@:userNameDetail =[];
+				foreach (var userName in userNameDetail)
+				{
 
-                newRow = userTableTbody.insertRow();
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(userNameCombo[selected][i]);
-                newCell.appendChild(newText);
-            }
-        }
-    }
+					@:userNameDetail.push('@userName');
+				}
+				@:userNameCombo.push(userNameDetail);
+			}
+			}
 
-    //入力チェック
-    //タイトルと内容が入力されている場合のみsbmitする
-    function InputCheck(){
-        
-        var flowId = document.getElementById("selectList").value;
+			//SelectBoxで選択されている
+			//フロー名のフローIDに紐づく詳細情報(ユーザ情報)を表示
+			var userTableTbody = userTable.createTBody();
 
-        if (createForm.title.value == "" || createForm.content.value == ""){
-            alert("タイトルと内容を入力して下さい");    //エラーメッセージを出力
-            return false;    //送信ボタン本来の動作をキャンセルします
-        }else if(flowId == null || flowId == ""){
-            alert("承認フローを選択してください");    //エラーメッセージを出力
-            return false;    //送信ボタン本来の動作をキャンセルします
-        }else{
-            return true;    //送信ボタン本来の動作を実行します
-        }
-    }
+			var newRow = null;
+			var newCell = null;
+			var newText = null;
+
+			var selected = selectList.selectedIndex;
+			selected--;
+			for (var i = 0; i < userNameCombo[selected].length; i++) {
+
+				newRow = null;
+				newCell = null;
+				newText = null;
+
+				newRow = userTableTbody.insertRow();
+				newCell = newRow.insertCell();
+				newText = document.createTextNode(userNameCombo[selected][i]);
+				newCell.appendChild(newText);
+			}
+		}
+	}
 
 </script>
 
-<h1>DocCreate</h1>
+<h4>
+	<img src="~/images/create.svg" alt="">
+	ドキュメント作成
+</h4>
+<div>
+	<div class="row g-3">
+		<form asp-action="Create" name="createForm" novalidate>
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>DocCreate</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create" name="createForm">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <p>タイトル：<br>
-                <input type="text" asp-for="docTitle" style="width:60%;" disabled=@createdFlg>
-            </p>
-            <p>内容：
-                <textarea asp-for="docContent" style="width:100%;" disabled=@createdFlg></textarea>
-            </p>
-            
+			@*
+			/_/_/_/_/_/_/_/_/_/
+				タイトル
+			/_/_/_/_/_/_/_/_/_/
+			*@
+			<div class="mb-3">
+				<div class="col-md-12">
+					@Html.LabelFor(model => model.docTitle)
+				</div>
+				@*エラーメッセージ表示*@
+				<div class="col-md-12">
+					<span asp-validation-for="docTitle" class="text-danger"></span>
+				</div>
+				<div class="col-md-12">
+					@{
+						if (@createdFlg)
+						{
+							@Html.TextBoxFor(
+								model => model.docTitle,  // プロパティ
+								new { style="width:100%;"} // その他の属性
+							)
+						}
+						else
+						{
+							@Html.TextBoxFor(
+								model => model.docTitle,  // プロパティ
+								new { style="width:100%;", disabled = "disabled"} // その他の属性}
+							)
+						}
+					}
+				</div>
+			</div>
 
-            @{
-                //新規作成画面の場合、承認フロープルダウン、登録ボタンを作成
-                if (!@createdFlg)
-                {
-                    //プルダウン
-                    <select asp-for="selectFlow"
-                        asp-items="@Model.selectListItems" id="selectList" onchange="ChangeList()"></select>
-                    //プルダウン内容表示エリア
-                    <table id="approvalFlowComboTable">
-                        <tbody>
-                            <tr></tr>
-                        </tbody>
-                    </table>
+			@*
+			/_/_/_/_/_/_/_/
+				内　容
+			/_/_/_/_/_/_/_/
+			*@
+			<div class="mb-3">
+				<div class="col-md-12">
+					@Html.LabelFor(model => model.docContent)
+				</div>
+				@*エラーメッセージ表示*@
+				<div class="col-md-12">
+					<span asp-validation-for="docContent" class="text-danger"></span>
+				</div>
+				<div class="col-md-12">
+					@{
+						if (@createdFlg)
+						{
+							@Html.TextAreaFor(
+								model => model.docContent,  // プロパティ
+								new { style="width:100%; height:250px;"} // その他の属性
+							)
+						}
+						else
+						{
+							@Html.TextAreaFor(
+								model => model.docContent,  // プロパティ
+								new { style="width:100%; height:250px;", disabled = "disabled"} // その他の属性
+							)
+						}
+					}
+				</div>
+			</div>
 
-                    //登録ボタン
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" onclick="return InputCheck()" />
-                    </div>
-                }
-            }
-        </form>
-    </div>
+
+
+			@{
+				//新規作成画面の場合、承認フロープルダウン、登録ボタンを作成
+				if (@createdFlg)
+				{
+					@*
+					/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+						承認フロープルダウン
+					/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+					*@
+					<div class="mb-3">
+						<div class="col-md-12">
+							@Html.LabelFor(model => model.selectFlow)
+						</div>
+						@*エラーメッセージ表示*@
+						<div class="col-md-12">
+							<span asp-validation-for="selectFlow" class="text-danger"></span>
+						</div>
+						<div class="col-md-12">
+
+							<select asp-for="selectFlow"
+							asp-items="@Model.selectListItems" id="selectList" onchange="ChangeList()"></select>
+
+							<table id="approvalFlowComboTable">
+								<tbody>
+									<tr></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					@*
+					/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+							登録ボタン
+					/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+					*@
+					<div class="col-md-12">
+						<input type="submit" value="作成" class="btn btn-primary" />
+					</div>
+				}
+			}
+		</form>
+	</div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

@@ -9,7 +9,10 @@ using System.Data;
 
 namespace DocumentFlow.Models
 {
-    public class DocSearchModel
+	/// <summary>
+	/// ドキュメント検索画面のモデル
+	/// </summary>
+	public class DocSearchModel
     {
 		/// <summary>
 		/// 画面表示に必要なViewModelの作成
@@ -57,7 +60,7 @@ namespace DocumentFlow.Models
 			 *取得した検索結果を画面表示用に加工し
 			 *viewModelに設定
 			 **********************************************/
-			viewModel.searchResults = CreateSearchResults(searchResultsDt, viewModel.limitNum, viewModel.pageIndexNum);
+			viewModel.searchResults = CreateSearchResults(searchResultsDt, (int)viewModel.limitNum, (int)viewModel.pageIndexNum);
 
 			return viewModel;
 		}
@@ -174,10 +177,10 @@ namespace DocumentFlow.Models
 		private static DocSearchViewModel CreatePageLync(DocSearchViewModel viewModel, DataTable searchResultsDt)
 		{
 			viewModel.maxPageNumHalf = viewModel.maxPageNum / 2;
-			viewModel.pageLastNum = PageCountCalculator(searchResultsDt, viewModel.limitNum);
-			int preMaxPageNum = PreMaxPageNumMaker(viewModel.maxPageNum, viewModel.pageLastNum);
-			viewModel.minPageNum = MinPageNumMaker(viewModel.pageIndexNum, viewModel.maxPageNumHalf, viewModel.pageLastNum, preMaxPageNum);
-			viewModel.maxPageNum = MaxPageNumMaker(viewModel.minPageNum, viewModel.maxPageNum, viewModel.pageLastNum);
+			viewModel.pageLastNum = PageCountCalculator(searchResultsDt, (int)viewModel.limitNum);
+			int preMaxPageNum = PreMaxPageNumMaker((int)viewModel.maxPageNum, (int)viewModel.pageLastNum);
+			viewModel.minPageNum = MinPageNumMaker((int)viewModel.pageIndexNum, (int)viewModel.maxPageNumHalf, (int)viewModel.pageLastNum, preMaxPageNum);
+			viewModel.maxPageNum = MaxPageNumMaker((int)viewModel.minPageNum, (int)viewModel.maxPageNum, (int)viewModel.pageLastNum);
 
 			return viewModel;
 		}

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using DocumentFlow.Models.ViewModels;
 
 namespace DocumentFlow.Controllers
 {
@@ -32,23 +33,26 @@ namespace DocumentFlow.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(string name, string pass)
 		{
+			AccountViewModel accountViewModel = new AccountViewModel();
 
 			//ユーザーネームとパスワードの組み合わせ情報の確認
 			String userId = AccountModel.GetUserId(name, pass);
 			if (userId == null || userId.Equals(""))
 			{
 				//確認できない場合
-				ViewData["name"] = name;
-				ViewData["pass"] = pass;
-				return View("LoginFail", "Account");
+				accountViewModel.name = name;
+				accountViewModel.pass = pass;
+				//return View("Login");
+				ModelState.AddModelError(string.Empty, "ログインIDまたはパスワード違います。");
+				return View(accountViewModel);
 			}
 			else
 			{
 				//確認できた場合、nameとUserIDを使用してサインインを行う
 				SignInExecute(name, userId);
-                //return RedirectToAction("Search", "DocSearch");
-                return RedirectToAction("Create", "DocCreate");
-            }
+                return RedirectToAction("Search", "DocSearch");
+				//return RedirectToAction("Create", "DocCreate");
+			}
 		}
 
 		/// <summary>

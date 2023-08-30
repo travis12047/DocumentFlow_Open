@@ -1,7 +1,7 @@
 ﻿@model DocumentFlow.Models.ViewModels.DocSearchViewModel
 
 @{
-	ViewData["Title"] = "Search";
+	ViewData["Title"] = "DocumentFlow 検索";
 	
 	var searchResults = Model.searchResults;
 	var pageLastNum = Model.pageLastNum;
@@ -14,51 +14,68 @@
 	var searchCondApprovalStatusList = Model.searchCondApprovalStatusList;
 }
 
-<h1>DocCreate</h1>
+<h4>
+	<img src="~/images/search.svg" alt="">
+	ドキュメント検索
+</h4>
 
-<form asp-action="Search" name="searchForm" method="post">
+<form asp-action="Search" name="searchForm" method="post" class="row g-3">
 	@*
 	/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 		検索条件設定エリア
 	/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 	*@
-	<p>
-		タイトル：<br>
-		<input type="text" asp-for="searchCondTitle" style="width:60%;">
-	</p>
+	@*検索ボックス*@
+	<div class="col-md-12">
+		@Html.LabelFor(model => model.searchCondTitle)
+		@Html.TextBoxFor(model => model.searchCondTitle, new { style="width:100%;"})
+	</div>
 	@*承認状況指定ラジオボタン*@
+	@*機能実装まで一旦コメントアウト*@
+	@*
 	@foreach (var i in Model.searchCondApprovalStatusList)
 	{
 		<input type="radio" asp-for="searchCondApprovalStatusList" id="@i.id" value="@i.id" checked="@i.Selected" />
 			@i.caption
 		<br />
 	}
+	*@
 	@*表示件数指定プルダウン*@
-	@Html.DropDownList("limitNumList")
-	<input type="submit" name="Search" value="検索" class="btn btn-primary" />
+	<div class="col-md-12">
+		@Html.DropDownList("limitNumList")
+	</div>
+	<div class="col-md-12">
+		<input type="submit" name="Search" value="検索" class="btn btn-primary" />
+	</div>
 </form>
-@{
-	//ページリンク作成エリア
-	for (int i = minPageNum; i < maxPageNum; i++)
-	{
-		//表示中のページの場合、テキストとして表示
-		if (i == pageIndexNum)
-		{
-			@i
+
+<br />
+<div class="row g-3">
+	<div class="col-md-12">
+		@{
+			//ページリンク作成エリア
+			for (int i = (int)minPageNum; i < maxPageNum; i++)
+			{
+				//表示中のページの場合、テキストとして表示
+				if (i == pageIndexNum)
+				{
+					@i
+				}
+				//上記以外の場合、リンクとして表示
+				else
+				{
+					<a asp-action="Search"
+					   asp-route-pageNum=@i
+					   asp-route-limitNum=@limitNum
+					   asp-route-searchCondTitle=@searchCondTitle
+					   asp-route-searchCondApprovalStatus=@searchCondApprovalStatus>
+						@i
+					</a>
+				}
+			}
 		}
-		//上記以外の場合、リンクとして表示
-		else
-		{
-			<a asp-action="Search"
-				asp-route-pageNum=@i
-				asp-route-limitNum=@limitNum
-				asp-route-searchCondTitle=@searchCondTitle
-				asp-route-searchCondApprovalStatus=@searchCondApprovalStatus>
-				@i
-			</a>
-		}
-	}
-}
+	</div>
+</div>
 
 <table class="table">
 	<thead>

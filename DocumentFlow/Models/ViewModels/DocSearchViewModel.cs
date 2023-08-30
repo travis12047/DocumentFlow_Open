@@ -1,5 +1,6 @@
 ﻿using DocumentFlow.Models.DB.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace DocumentFlow.Models.ViewModels
 {
@@ -11,12 +12,12 @@ namespace DocumentFlow.Models.ViewModels
 		/// <summary>
 		/// 検索結果を格納するList
 		/// </summary>
-		public List<SearchResultsDTO> searchResults { get; set; }
+		public List<SearchResultsDTO>? searchResults { get; set; }
 
 		/// <summary>
 		/// 表示件数
 		/// </summary>
-		public int limitNum { get; set; } = 5;
+		public int? limitNum { get; set; } = 5;
 		/// <summary>
 		/// 表示件数プルダウン用のList
 		/// </summary>
@@ -24,29 +25,29 @@ namespace DocumentFlow.Models.ViewModels
 		{
 			new SelectListItem()
 			{
-				Text = "5",
+				Text = "5 件",
 				Value = "5"
 			},
 			new SelectListItem()
 			{
-				Text = "10",
+				Text = "10 件",
 				Value = "10"
 			},
 			new SelectListItem()
 			{
-				Text = "15",
+				Text = "15 件",
 				Value = "15"
 			},
 			new SelectListItem()
 			{
-				Text = "20",
+				Text = "20 件",
 				Value = "20"
 			}
 		};
 		/// <summary>
 		/// 承認状況
 		/// </summary>
-		public int searchCondApprovalStatus { get; set; }
+		public int? searchCondApprovalStatus { get; set; }
 		/// <summary>
 		/// 承認状況ラジオボタン用のClass
 		/// </summary>
@@ -84,27 +85,28 @@ namespace DocumentFlow.Models.ViewModels
 		/// <summary>
 		/// 検索条件：タイトル
 		/// </summary>
-		public string searchCondTitle { get; set; }
+		[DisplayName("タイトル")]
+		public string? searchCondTitle { get; set; }
 
 		/// <summary>
 		/// 現在のページ番号
 		/// </summary>
-		public int pageIndexNum { get; set; } = 1;
+		public int? pageIndexNum { get; set; } = 1;
 		/// <summary>
 		/// 表示件数と検索結果から算出した最後のページ番号
 		/// </summary>
-		public int pageLastNum { get; set; }
+		public int? pageLastNum { get; set; }
 		/// <summary>
 		/// 画面に表示する最小のページ番号
 		/// </summary>
-		public int minPageNum { get; set; }
+		public int? minPageNum { get; set; }
 		/// <summary>
 		/// 画面に表示する最大のページ番号
 		/// </summary>
-		public int maxPageNum { get; set; } = 6;
+		public int? maxPageNum { get; set; } = 6;
 		/// <summary>
 		/// maxPageNumを半分で割った値
 		/// </summary>
-		public int maxPageNumHalf { get; set; }
+		public int? maxPageNumHalf { get; set; }
 	}
 }

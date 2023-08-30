@@ -2,7 +2,7 @@
 using DocumentFlow.Models.DB;
 using DocumentFlow.Models.DB.DAO;
 using DocumentFlow.Models.DB.DTO;
-using DocumentFlow.Models.ViewModel;
+using DocumentFlow.Models.ViewModels;
 using DocumentFlow.Profile;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections;
@@ -77,7 +77,7 @@ namespace DocumentFlow.Models
 				viewModel.docTitle = mapperList[0].m_document_title;
 				viewModel.docContent = mapperList[0].m_document_content;
 				//作成済みドキュメントフラグをアクティブにする
-				viewModel.createdFlg = true;
+				viewModel.createdFlg = false;
 			}
 
 			return viewModel;

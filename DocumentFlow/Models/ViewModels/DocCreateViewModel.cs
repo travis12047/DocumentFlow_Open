@@ -1,7 +1,9 @@
 ﻿using DocumentFlow.Models.DB.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace DocumentFlow.Models.ViewModel
+namespace DocumentFlow.Models.ViewModels
 {
 	/// <summary>
 	/// DocCreate機能のViewModel
@@ -21,27 +23,35 @@ namespace DocumentFlow.Models.ViewModel
 		/// <summary>
 		/// フローIDに紐づくユーザList
 		/// </summary>
-		public List<List<ApprovalFlowDTO>> approvalFlowCombo { get; set; }
+		public List<List<ApprovalFlowDTO>>? approvalFlowCombo { get; set; }
 
 		/// <summary>
 		/// 画面で選択された承認フロー
 		/// </summary>
-		public string selectFlow { get; set; } = string.Empty;
+		[Required(ErrorMessage = "{0}は必須です")]
+		[DisplayName("承認フロー")]
+		public string? selectFlow { get; set; }
 
-		/// <summary>
-		/// 画面で入力されたタイトル
-		/// </summary>
-		public string docTitle { get; set; }
+        /// <summary>
+        /// 画面で入力されたタイトル
+        /// </summary>
+        [Required(ErrorMessage = "{0}は必須です")]
+        [StringLength(20)]
+        [DisplayName("タイトル")]
+        public string docTitle { get; set; }
 
-		/// <summary>
-		/// 画面で入力された内容
-		/// </summary>
-		public string docContent { get; set; } = string.Empty;
+        /// <summary>
+        /// 画面で入力された内容
+        /// </summary>
+        [Required(ErrorMessage = "{0}は必須です")]
+        [StringLength(400)]
+        [DisplayName("内容")]
+        public string docContent { get; set; } = string.Empty;
 
 		/// <summary>
 		/// 作成済みドキュメントフラグ
 		/// </summary>
-		public Boolean createdFlg { get; set; } = false;
+		public Boolean createdFlg { get; set; } = true;
 
 	}
 }
