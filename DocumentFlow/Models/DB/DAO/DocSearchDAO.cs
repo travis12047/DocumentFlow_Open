@@ -9,8 +9,10 @@ namespace DocumentFlow.Models.DB.DAO
 		/// 検索画面に表示するドキュメント情報を取得する
 		/// </summary>
 		/// <param name="searchCondTitleList">タイトルTextBoxの内容</param>
+		/// <param name="userId">セッションに記録されているユーザID</param>
+		/// <param name="searchCondApprovalStatus">承認状況区分</param>
 		/// <returns>検索結果</returns>
-		public static DataTable GetSearchResults(List<string> searchCondTitleList)
+		public static DataTable GetSearchResults(List<string> searchCondTitleList, string userId, int? searchCondApprovalStatus)
         {
             String sql =
             "select	 " +
@@ -40,10 +42,30 @@ namespace DocumentFlow.Models.DB.DAO
             //ドキュメントが削除されていないものを取得する
             "where base.m_document_management_deleted_at is null ";
 
+			//自身が承認フローに含まれているもの、
+			//自身が作成したもの、
+			//承認済みのものを取得する
+			//sql +=
+			//"and ( " +
+			//"    base.m_document_approvalflow_id in ( " +
+			//"		select " +
+			//"			m_approval_flow_id " +
+			//"		from m_approval_flow " +
+			//"		where m_approval_flow_m_user_id = '" + userId + "' " +
+			//"    ) " +
+			//"    or " +
+			//"    base.m_document_create_user_id = '" + userId + "' " +
+			//"    or " +
+			//"    base.m_document_completion_at is not null " +
+			//") ";
+
 			//検索条件に「タイトル」の内容を追加する
 			sql += AddSearchCondTitle(searchCondTitleList);
 
-            //デフォルトの並び順は更新日時の降順とする
+			//検索条件に「承認状況」の内容を追加する
+			sql += AddSearchCondApprovalStatus(searchCondApprovalStatus, userId);
+
+			//デフォルトの並び順は更新日時の降順とする
 			sql += "order by base.m_document_updatedata desc ";
 			sql += "; ";
 
@@ -94,6 +116,38 @@ namespace DocumentFlow.Models.DB.DAO
 		{
 			string returnString = Regex.Replace(targetString, @"[%_\[']", "\\$0");
 			return returnString;
+		}
+
+		/// <summary>
+		/// 検索条件に「承認状況」の内容を追加する
+		/// </summary>
+		/// <param name="searchCondApprovalStatus">承認状況区分</param>
+		/// <param name="userId">セッションに記録されているユーザID</param>
+		/// <returns>指定の承認状況を基に作成された条件句</returns>
+		private static string AddSearchCondApprovalStatus(int? searchCondApprovalStatus, string userId)
+		{
+			String sql = "";
+
+			switch (searchCondApprovalStatus)
+			{
+				//全て
+				case 0:
+					//全ての場合SQLの生成は行わない
+					break;
+
+				//承認済み
+				case 1:
+					sql += "and base.m_document_completion_at is not null ";
+					break;
+
+				//あなたの承認待ち
+				case 2:
+					sql += "and approval_flow.m_approval_flow_m_user_id = '" + userId + "' ";
+					break;
+			}
+
+			return sql;
+
 		}
 
 	}

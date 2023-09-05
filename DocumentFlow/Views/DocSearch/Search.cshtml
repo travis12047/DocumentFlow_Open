@@ -30,16 +30,17 @@
 		@Html.LabelFor(model => model.searchCondTitle)
 		@Html.TextBoxFor(model => model.searchCondTitle, new { style="width:100%;"})
 	</div>
+	
 	@*承認状況指定ラジオボタン*@
-	@*機能実装まで一旦コメントアウト*@
-	@*
-	@foreach (var i in Model.searchCondApprovalStatusList)
-	{
-		<input type="radio" asp-for="searchCondApprovalStatusList" id="@i.id" value="@i.id" checked="@i.Selected" />
+	<div class="col-md-12">
+		@foreach (var i in Model.searchCondApprovalStatusList)
+		{
+			<input type="radio" asp-for="searchCondApprovalStatusList" id="@i.id" value="@i.id" checked="@i.Selected" />
 			@i.caption
-		<br />
-	}
-	*@
+			<br />
+		}
+	</div>
+	
 	@*表示件数指定プルダウン*@
 	<div class="col-md-12">
 		@Html.DropDownList("limitNumList")

@@ -18,6 +18,7 @@ namespace DocumentFlow.Models
 		/// 画面表示に必要なViewModelの作成
 		/// </summary>
 		/// <param name="viewModel">viewModel</param>
+		/// <param name="userId">セッションに記録されているユーザID</param>
 		/// <param name="limitNumList">表示件数プルダウンの値</param>
 		/// <param name="searchCondApprovalStatusList">承認状況ラジオボタンの値</param>
 		/// <param name="pageNum">画面で表示中のページ番号</param>
@@ -25,7 +26,7 @@ namespace DocumentFlow.Models
 		/// <param name="searchCondApprovalStatus">承認状況</param>
 		/// <param name="searchCondTitle">タイトルTextBoxの内容</param>
 		/// <returns>項目設定済みのviewModel</returns>
-		public static DocSearchViewModel CreateViewModel(DocSearchViewModel viewModel,
+		public static DocSearchViewModel CreateViewModel(DocSearchViewModel viewModel, string userId,
 		//初期表示、検索処理実行時に使用される引数
 		string limitNumList, string searchCondApprovalStatusList,
 		//ページリンク押下時に使用される引数
@@ -33,11 +34,6 @@ namespace DocumentFlow.Models
 		//全ての処理で使用される引数
 		string searchCondTitle)
 		{
-			/***********************************************
-			 *検索処理の実行
-			 **********************************************/
-			DataTable searchResultsDt = GetSearchResults(searchCondTitle);
-
 			/***********************************************
 			 *画面上で設定した検索条件を保存
 			 **********************************************/
@@ -53,8 +49,19 @@ namespace DocumentFlow.Models
 			viewModel = LimitNumSetter(viewModel, limitNumList, limitNum);
 			//承認状況系の設定
 			viewModel = ApprovalStatusSetter(viewModel, searchCondApprovalStatusList, searchCondApprovalStatus);
-			//ページングリンク作成
+
+
+			/***********************************************
+			 *検索処理の実行
+			 **********************************************/
+			DataTable searchResultsDt = GetSearchResults(searchCondTitle, userId, viewModel.searchCondApprovalStatus);
+
+
+			/***********************************************
+			 *ページングリンク作成
+			 **********************************************/
 			viewModel = CreatePageLync(viewModel, searchResultsDt);
+
 
 			/***********************************************
 			 *取得した検索結果を画面表示用に加工し
@@ -69,8 +76,10 @@ namespace DocumentFlow.Models
 		/// 検索処理の実行
 		/// </summary>
 		/// <param name="searchCondTitle">タイトルTextBoxの内容</param>
+		/// <param name="userId">セッションに記録されているユーザID</param>
+		/// <param name="searchCondApprovalStatus">承認状況</param>
 		/// <returns>検索結果を格納したDataTable</returns>
-		private static DataTable GetSearchResults(string searchCondTitle)
+		private static DataTable GetSearchResults(string searchCondTitle, string userId, int? searchCondApprovalStatus)
 		{
 			//「タイトル」に文字が入力されている場合、
 			//ブランクでスプリットし、Listとしてまとめる
@@ -80,7 +89,7 @@ namespace DocumentFlow.Models
 				searchCondTitleList = StrignSplitter(searchCondTitle);
 			}
 			//検索処理の実行
-			DataTable searchResultsDt = DocSearchDAO.GetSearchResults(searchCondTitleList);
+			DataTable searchResultsDt = DocSearchDAO.GetSearchResults(searchCondTitleList, userId, searchCondApprovalStatus);
 			return searchResultsDt;
 
 		}

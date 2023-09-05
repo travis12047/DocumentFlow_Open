@@ -37,7 +37,11 @@ namespace DocumentFlow.Controllers
 		string searchCondTitle)
 		{
 			DocSearchViewModel docSearchViewModel = new DocSearchViewModel();
-			docSearchViewModel = DocSearchModel.CreateViewModel(docSearchViewModel, limitNumList, searchCondApprovalStatusList, pageNum, limitNum, searchCondApprovalStatus, searchCondTitle);
+
+			//セッションに記録されているユーザID
+			string userId = HttpContext.User.Claims.First().Value;
+
+			docSearchViewModel = DocSearchModel.CreateViewModel(docSearchViewModel, userId, limitNumList, searchCondApprovalStatusList, pageNum, limitNum, searchCondApprovalStatus, searchCondTitle);
 			ViewData.Model = docSearchViewModel;
 			ViewBag.limitNumList = docSearchViewModel.limitNumList;
 			return View();

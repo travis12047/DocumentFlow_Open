@@ -77,7 +77,7 @@ namespace DocumentFlow.Models.ViewModels
 			new ApprovalStatusList()
 			{
 				id = 2,
-				caption = "未承認",
+				caption = "あなたの承認待ち",
 				Selected = false
 			}
 		};
