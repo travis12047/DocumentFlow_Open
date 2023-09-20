@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using DocumentFlow.Models.DB;
+using DocumentFlow.Models.CommonModels;
 using DocumentFlow.Models.DB.DAO;
 using DocumentFlow.Models.DB.DTO;
 using DocumentFlow.Models.ViewModels;
-using DocumentFlow.Profile;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections;
 using System.Data;
@@ -62,15 +61,9 @@ namespace DocumentFlow.Models
 			if (!string.IsNullOrEmpty(documentId))
 			{
 				DataTable documentDataDt = DocCreateDAO.GetCreatedDoc(documentId);
-				List<ArrayList> documentDataList = DAO_Master.DataTableToListType(documentDataDt);
+				List<ArrayList> documentDataList = CommonModel.DataTableToListType(documentDataDt);
 
-				var config = new MapperConfiguration(cfg =>
-				{
-					cfg.AddProfile<AutoMapperConfig>();
-				});
-
-				var mapper = config.CreateMapper();
-
+				IMapper mapper = CommonModel.CreateMapper();
 				var mapperList = mapper.Map<List<ArrayList>, List<CreatedDocDTO>>(documentDataList);
 
 				//文書情報を設定してください
@@ -99,7 +92,7 @@ namespace DocumentFlow.Models
 			flowIdNameDt = flowIdNameDt.DefaultView.ToTable(true, "m_approval_flow_id", "m_approval_flow_name");
 
 			//datatableをListに変形
-			List<ArrayList> flowIdNameList = DAO_Master.DataTableToListType(flowIdNameDt);
+			List<ArrayList> flowIdNameList = CommonModel.DataTableToListType(flowIdNameDt);
 
 			List<SelectListItem> selectListItems = new List<SelectListItem>();
 
@@ -149,15 +142,11 @@ namespace DocumentFlow.Models
 			 *DTOクラスの形にマッピングされたListを作成
 			 **********************************************/
             //datatableをListに変形
-            List<ArrayList> approvalFlowList = DAO_Master.DataTableToListType(approvalFlowDt);
+            List<ArrayList> approvalFlowList = CommonModel.DataTableToListType(approvalFlowDt);
 
-            //Listを指定のDTOクラスの形にマッピング
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<AutoMapperConfig>();
-            });
-            var mapper = config.CreateMapper();
-            var mapperList = mapper.Map<List<ArrayList>, List<ApprovalFlowDTO>>(approvalFlowList);
+			//Listを指定のDTOクラスの形にマッピング
+			IMapper mapper = CommonModel.CreateMapper();
+			var mapperList = mapper.Map<List<ArrayList>, List<ApprovalFlowDTO>>(approvalFlowList);
 
 
             /***********************************************************
@@ -220,15 +209,11 @@ namespace DocumentFlow.Models
 			 *DTOクラスの形にマッピングされたListを作成
 			 **********************************************/
             //datatableをListに変形
-            List<ArrayList> approvalFlowList = DAO_Master.DataTableToListType(approvalFlowDt);
+            List<ArrayList> approvalFlowList = CommonModel.DataTableToListType(approvalFlowDt);
 
-            //Listを指定のDTOクラスの形にマッピング
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<AutoMapperConfig>();
-            });
-            var mapper = config.CreateMapper();
-            var mapperList = mapper.Map<List<ArrayList>, List<ApprovalFlowDTO>>(approvalFlowList);
+			//Listを指定のDTOクラスの形にマッピング
+			IMapper mapper = CommonModel.CreateMapper();
+			var mapperList = mapper.Map<List<ArrayList>, List<ApprovalFlowDTO>>(approvalFlowList);
 
 
             /***********************************************************

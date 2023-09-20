@@ -1,18 +1,17 @@
 ﻿using AutoMapper;
-using DocumentFlow.Models.DB;
+using DocumentFlow.Models.CommonModels;
 using DocumentFlow.Models.DB.DAO;
 using DocumentFlow.Models.DB.DTO;
 using DocumentFlow.Models.ViewModels;
-using DocumentFlow.Profile;
 using System.Collections;
 using System.Data;
 
 namespace DocumentFlow.Models
 {
-	/// <summary>
-	/// ドキュメント検索画面のモデル
-	/// </summary>
-	public class DocSearchModel
+    /// <summary>
+    /// ドキュメント検索画面のモデル
+    /// </summary>
+    public class DocSearchModel
     {
 		/// <summary>
 		/// 画面表示に必要なViewModelの作成
@@ -43,7 +42,7 @@ namespace DocumentFlow.Models
 			if (!string.IsNullOrEmpty(pageNum))
 			{
 				//初期表示または検索ボタン押下時
-				viewModel.pageIndexNum = int.Parse(pageNum);
+				viewModel.pagingItem.pageIndexNum = int.Parse(pageNum);
 			}
 			//表示件数系の設定
 			viewModel = LimitNumSetter(viewModel, limitNumList, limitNum);
@@ -60,14 +59,16 @@ namespace DocumentFlow.Models
 			/***********************************************
 			 *ページングリンク作成
 			 **********************************************/
-			viewModel = CreatePageLync(viewModel, searchResultsDt);
+			viewModel.pagingItem = PagingModel.CreatePageLync(viewModel.pagingItem, searchResultsDt);
 
 
 			/***********************************************
 			 *取得した検索結果を画面表示用に加工し
 			 *viewModelに設定
 			 **********************************************/
-			viewModel.searchResults = CreateSearchResults(searchResultsDt, (int)viewModel.limitNum, (int)viewModel.pageIndexNum);
+			//viewModel.searchResults = CreateSearchResults(searchResultsDt, (int)viewModel.limitNum, (int)viewModel.pageIndexNum);
+			searchResultsDt = PagingModel.CreateDisplayDataTable(searchResultsDt, (int)viewModel.pagingItem.limitNum, (int)viewModel.pagingItem.pageIndexNum);
+			viewModel.searchResults = CreateDisplayList(searchResultsDt);
 
 			return viewModel;
 		}
@@ -123,19 +124,19 @@ namespace DocumentFlow.Models
 			if (!string.IsNullOrEmpty(limitNumList))
 			{
 				//初期表示または検索ボタン押下時
-				viewModel.limitNum = int.Parse(limitNumList);
+				viewModel.pagingItem.limitNum = int.Parse(limitNumList);
 			}
 			else if (!string.IsNullOrEmpty(limitNum))
 			{
 				//ページリンク押下時
-				viewModel.limitNum = int.Parse(limitNum);
+				viewModel.pagingItem.limitNum = int.Parse(limitNum);
 			}
 
 			//表示件数選択プルダウンの選択状態設定
 			int limitNumListLoopCount = 0;
 			foreach (var i in viewModel.limitNumList)
 			{
-				if (int.Parse(i.Value) == viewModel.limitNum)
+				if (int.Parse(i.Value) == viewModel.pagingItem.limitNum)
 				{
 					viewModel.limitNumList[limitNumListLoopCount].Selected = true;
 				}
@@ -178,168 +179,21 @@ namespace DocumentFlow.Models
 
 		}
 		/// <summary>
-		/// ページリンク系の作成
+		/// 取得したDataTableをM_DocumentDisplayDTO型のListとして返す
 		/// </summary>
-		/// <param name="viewModel">viewModel</param>
-		/// <param name="searchResultsDt">ページ数算出に使用する検索結果</param>
-		/// <returns>ページリンク設定後のviewModel</returns>
-		private static DocSearchViewModel CreatePageLync(DocSearchViewModel viewModel, DataTable searchResultsDt)
+		/// <param name="originalDataTable">承認済みの未読情報が格納されたDataTable</param>
+		/// <returns>M_DocumentDisplayDTO型のList</returns>
+		private static List<M_DocumentDisplayDTO> CreateDisplayList(DataTable originalDataTable)
 		{
-			viewModel.maxPageNumHalf = viewModel.maxPageNum / 2;
-			viewModel.pageLastNum = PageCountCalculator(searchResultsDt, (int)viewModel.limitNum);
-			int preMaxPageNum = PreMaxPageNumMaker((int)viewModel.maxPageNum, (int)viewModel.pageLastNum);
-			viewModel.minPageNum = MinPageNumMaker((int)viewModel.pageIndexNum, (int)viewModel.maxPageNumHalf, (int)viewModel.pageLastNum, preMaxPageNum);
-			viewModel.maxPageNum = MaxPageNumMaker((int)viewModel.minPageNum, (int)viewModel.maxPageNum, (int)viewModel.pageLastNum);
-
-			return viewModel;
-		}
-		/// <summary>
-		/// 検索結果をList化し、表示するページ番号の件数分だけ返す
-		/// </summary>
-		/// <param name="searchResultsDt">検索結果datatable</param>
-		/// <param name="limitNum">表示件数</param>
-		/// <param name="pageIndexNum">インデックスページ数</param>
-		/// <returns></returns>
-		private static List<SearchResultsDTO> CreateSearchResults
-		(DataTable searchResultsDt, int limitNum, int pageIndexNum)
-		{
-			/***********************************************
-			 *引数のdatatableから、
-			 *DTOクラスの形にマッピングされたListを作成
-			 **********************************************/
 			//datatableをListに変形
-			List<ArrayList> searchResultsList = DAO_Master.DataTableToListType(searchResultsDt);
+			List<ArrayList> originalList = CommonModel.DataTableToListType(originalDataTable);
 
 			//Listを指定のDTOクラスの形にマッピング
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.AddProfile<AutoMapperConfig>();
-			});
-			var mapper = config.CreateMapper();
-			var mapperList = mapper.Map<List<ArrayList>, List<SearchResultsDTO>>(searchResultsList);
+			IMapper mapper = CommonModel.CreateMapper();
+			var mapperList = mapper.Map<List<ArrayList>, List<M_DocumentDisplayDTO>>(originalList);
 
-
-
-			/***********************************************
-			 *表示するページ番号の件数分だけ取得
-			 **********************************************/
-			int itemLoopStart = (limitNum * pageIndexNum) - limitNum;
-			if (itemLoopStart < 0)
-			{
-				itemLoopStart = 0;
-			}
-
-			List<SearchResultsDTO> searchResultsViewList = new List<SearchResultsDTO>();
-
-			for (int i = 0; i < mapperList.Count; i++)
-			{
-				if (itemLoopStart <= i && i < (itemLoopStart + limitNum))
-				{
-					searchResultsViewList.Add(mapperList[i]);
-				}
-			}
-
-			return searchResultsViewList;
+			return mapperList;
 
 		}
-		/// <summary>
-		/// 検索結果を画面表示件数で割り、最終ページ数を取得する
-		/// </summary>
-		/// <param name="searchResultsDt">検索結果datatable</param>
-		/// <param name="limitNum">表示件数</param>
-		/// <returns>最終ページ数</returns>
-		private static int PageCountCalculator(DataTable searchResultsDt, int limitNum)
-		{
-			//検索結果のレコード件数を画面表示件数で割る
-			int rowsCount = searchResultsDt.Rows.Count;
-			int pageCount = rowsCount / limitNum;
-
-			//上記除算にて余りが発生する場合、1プラスする
-			int remainder = rowsCount % limitNum;
-			if (remainder > 0)
-			{
-				pageCount += 1;
-			}
-
-			pageCount += 1;
-
-			return pageCount;
-		}
-		/// <summary>
-		/// 最大ページリンク数より最終ページ数が小さい場合、
-		/// 最終ページ数で上書く
-		/// </summary>
-		/// <param name="maxPageNum">最大ページリンク数</param>
-		/// <param name="pageLastNum">最終ページ数</param>
-		/// <returns>最大ページリンク数</returns>
-		private static int PreMaxPageNumMaker(int maxPageNum, int pageLastNum)
-		{
-			if (maxPageNum > pageLastNum)
-			{
-				maxPageNum = pageLastNum;
-			}
-
-			return maxPageNum;
-
-		}
-		/// <summary>
-		/// 最小ページリンク数を設定する
-		/// </summary>
-		/// <param name="pageIndexNum">インデックスページ数</param>
-		/// <param name="maxPageNumHalf">最大ページリンク数の半分の数</param>
-		/// <param name="pageLastNum">最終ページ数</param>
-		/// <param name="maxPageNum">最大ページリンク数</param>
-		/// <returns>最小ページリンク数</returns>
-		private static int MinPageNumMaker(int pageIndexNum, int maxPageNumHalf, int pageLastNum, int maxPageNum)
-		{
-			int minPageNum = pageIndexNum;
-			//現在ページ数が最大ページリンク数の半分以下の場合、1を設定
-			//そうでない場合、現在ページ数から最大ページリンク数の半分の数を引く
-			if (minPageNum <= maxPageNumHalf)
-			{
-				minPageNum = 1;
-			}
-			else
-			{
-				minPageNum -= maxPageNumHalf;
-			}
-
-			//最大ページリンク数が最終ページ数以上の場合、1を設定
-			if (pageLastNum <= maxPageNum)
-			{
-				minPageNum = 1;
-			}
-			//最終ページ数より、
-			//最大ページリンク数と最小ページリンク数の合算値のほうが大きい場合
-			else if (pageLastNum < (minPageNum + maxPageNum))
-			{
-				//最終ページ数から最大ページリンク数を引いた値を設定
-				minPageNum = pageLastNum - maxPageNum;
-			}
-
-			return minPageNum;
-		}
-
-		/// <summary>
-		/// 最大ページリンク数を設定する
-		/// </summary>
-		/// <param name="minPageNum">最小ページリンク数</param>
-		/// <param name="maxPageNum">最大ページリンク数</param>
-		/// <param name="pageLastNum">最終ページ数</param>
-		/// <returns>最大ページリンク数</returns>
-		private static int MaxPageNumMaker(int minPageNum, int maxPageNum, int pageLastNum)
-		{
-			int returnNum;
-			if ((maxPageNum + minPageNum) < pageLastNum)
-			{
-				returnNum = maxPageNum + minPageNum;
-			}else
-			{
-				returnNum = pageLastNum;
-			}
-
-			return returnNum;
-		}
-
-    }
+	}
 }

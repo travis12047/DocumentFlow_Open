@@ -32,8 +32,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jQ3JlYXRlXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/PortableGit/WorkSpace/DocumentFlow/DocumentFlow/Views/DocCreate/CreateComplete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jQ3JlYXRlXENyZWF0ZUNvbXBsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/PortableGit/WorkSpace/DocumentFlow/DocumentFlow/Views/DocSearch/Search.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jU2VhcmNoXFNlYXJjaC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PortableGit/WorkSpace/DocumentFlow/DocumentFlow/Views/Home/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PortableGit/WorkSpace/DocumentFlow/DocumentFlow/Views/Shared/Error.cshtml]

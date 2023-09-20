@@ -26,7 +26,7 @@
             .ForMember(dest => dest.m_approval_flow_m_user_id, opt => opt.MapFrom(s => s == null ? String.Empty : s[3]))
             .ForMember(dest => dest.m_user_name, opt => opt.MapFrom(s => s == null ? String.Empty : s[4]));
 
-			CreateMap<ArrayList, SearchResultsDTO>()
+			CreateMap<ArrayList, M_DocumentDisplayDTO>()
 			.ForMember(dest => dest.document_id, opt => opt.MapFrom(s => s == null ? String.Empty : s[0]))
 			.ForMember(dest => dest.document_title, opt => opt.MapFrom(s => s == null ? String.Empty : s[1]))
 			.ForMember(dest => dest.create_user_name, opt => opt.MapFrom(s => s == null ? String.Empty : s[2]))

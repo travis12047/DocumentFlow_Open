@@ -1,0 +1,206 @@
+﻿@model DocumentFlow.Models.ViewModels.HomeViewModel
+
+@{
+	ViewData["Title"] = "Home";
+
+	var approvedUnreadList = Model.approvedUnreadList;
+	var approvedUnreadPagingItem = Model.approvedUnreadPagingItem;
+	var requiringApprovalList = Model.requiringApprovalList;
+	var requiringApprovalPagingItem = Model.requiringApprovalPagingItem;
+}
+
+<h4>
+	<img src="~/images/home.svg" alt="">
+	Home
+</h4>
+
+
+<div class="row g-3">
+	<div class="mb-3">
+		<div class="col-md-12">
+			<h6 class="card-header">
+				<img src="~/images/approvedUnread.svg" alt="" height="20" width="20">
+				新着ドキュメント
+			</h6>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							ID
+						</th>
+						<th>
+							タイトル
+						</th>
+						<th>
+							申請者
+						</th>
+						<th>
+							完了日
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in approvedUnreadList)
+					{
+						<tr>
+							<td>
+								@item.document_id
+							</td>
+							<td>
+								<a asp-controller="DocCreate"
+								   asp-action="ViewCreatedDoc"
+								   asp-route-documentId=@item.document_id>
+									@item.document_title
+								</a>
+							</td>
+							<td>
+								@item.create_user_name
+							</td>
+							<td>
+								@item.completion_at
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">
+							@{
+								if (approvedUnreadPagingItem.minPageNum > 1)
+								{
+									<a asp-action="Home"
+									   asp-route-approvedUnreadPageIndexNum=1>
+										1
+									</a>
+									<span>..</span>
+								}
+								//ページリンク作成エリア
+								for (int i = (int)approvedUnreadPagingItem.minPageNum; i < approvedUnreadPagingItem.maxPageNum; i++)
+								{
+									//表示中のページの場合、テキストとして表示
+									if (i == approvedUnreadPagingItem.pageIndexNum)
+									{
+										@i
+									}
+									//上記以外の場合、リンクとして表示
+									else
+									{
+										<a asp-action="Home"
+										   asp-route-approvedUnreadPageIndexNum=@i>
+											@i
+										</a>
+									}
+								}
+								if (approvedUnreadPagingItem.maxPageNum != approvedUnreadPagingItem.pageLastNum)
+								{
+									<span>..</span>
+									<a asp-action="Home"
+									   asp-route-approvedUnreadPageIndexNum=@(approvedUnreadPagingItem.pageLastNum - 1)>
+										@(approvedUnreadPagingItem.pageLastNum - 1)
+									</a>
+								}
+							}
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row g-3">
+	<div class="mb-3">
+		<div class="col-md-12">
+			<h6 class="card-header">
+				<img src="~/images/approvalPending.svg" alt="" height="20" width="20">
+				承認待ちドキュメント
+			</h6>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							ID
+						</th>
+						<th>
+							タイトル
+						</th>
+						<th>
+							申請者
+						</th>
+						<th>
+							<span>&thinsp;</span>
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in requiringApprovalList)
+					{
+						<tr>
+							<td>
+								@item.document_id
+							</td>
+							<td>
+								<a asp-controller="DocCreate"
+								   asp-action="ViewCreatedDoc"
+								   asp-route-documentId=@item.document_id>
+									@item.document_title
+								</a>
+							</td>
+							<td>
+								@item.create_user_name
+							</td>
+							<td>
+								<span>&thinsp;</span>
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">
+							@{
+								if (requiringApprovalPagingItem.minPageNum > 1)
+								{
+									<a asp-action="Home"
+									   asp-route-requiringApprovalPageIndexNum=1>
+										1
+									</a>
+									<span>..</span>
+								}
+								//ページリンク作成エリア
+								for (int i = (int)requiringApprovalPagingItem.minPageNum; i < requiringApprovalPagingItem.maxPageNum; i++)
+								{
+									//表示中のページの場合、テキストとして表示
+									if (i == requiringApprovalPagingItem.pageIndexNum)
+									{
+										@i
+									}
+									//上記以外の場合、リンクとして表示
+									else
+									{
+										<a asp-action="Home"
+										   asp-route-requiringApprovalPageIndexNum=@i>
+											@i
+										</a>
+									}
+								}
+								if (requiringApprovalPagingItem.maxPageNum != requiringApprovalPagingItem.pageLastNum)
+								{
+									<span>..</span>
+									<a asp-action="Home"
+									   asp-route-requiringApprovalPageIndexNum=@(requiringApprovalPagingItem.pageLastNum - 1)>
+										@(requiringApprovalPagingItem.pageLastNum - 1)
+									</a>
+								}
+							}
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

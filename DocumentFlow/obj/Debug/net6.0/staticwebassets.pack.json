@@ -13,6 +13,26 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\wwwroot\\images\\approvalPending.svg",
+      "PackagePath": "staticwebassets\\images\\approvalPending.svg"
+    },
+    {
+      "Id": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\wwwroot\\images\\approvedUnread.svg",
+      "PackagePath": "staticwebassets\\images\\approvedUnread.svg"
+    },
+    {
+      "Id": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\wwwroot\\images\\create.svg",
+      "PackagePath": "staticwebassets\\images\\create.svg"
+    },
+    {
+      "Id": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\wwwroot\\images\\home.svg",
+      "PackagePath": "staticwebassets\\images\\home.svg"
+    },
+    {
+      "Id": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\wwwroot\\images\\search.svg",
+      "PackagePath": "staticwebassets\\images\\search.svg"
+    },
+    {
       "Id": "D:\\PortableGit\\WorkSpace\\DocumentFlow\\DocumentFlow\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

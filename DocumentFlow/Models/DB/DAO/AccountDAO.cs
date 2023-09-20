@@ -1,10 +1,11 @@
+using DocumentFlow.Models.CommonModels;
 using System.Collections;
 using System.Data;
 
 namespace DocumentFlow.Models.DB.DAO
 {
 	/// <summary>
-	/// Account機能のDAOクラス
+	/// ログイン画面のDAOクラス
 	/// </summary>
 	public class AccountDAO
 	{
@@ -23,7 +24,7 @@ namespace DocumentFlow.Models.DB.DAO
 				"where m_user_name = '" + name + "' " +
 				"and m_user_pass = '" + pass + "' ;";
 			DataTable sqlResult = DAO_Master.Execute(sql);
-			List<ArrayList> dataTableToList = DAO_Master.DataTableToListType(sqlResult);
+			List<ArrayList> dataTableToList = CommonModel.DataTableToListType(sqlResult);
 
 			return dataTableToList;
 		}

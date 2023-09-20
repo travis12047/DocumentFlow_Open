@@ -1,42 +1,32 @@
 ﻿using DocumentFlow.Models;
-using DocumentFlow.Models.DB.DAO;
+using DocumentFlow.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Diagnostics;
 
 namespace DocumentFlow.Controllers
 {
+	/// <summary>
+	/// Home画面のコントローラー
+	/// </summary>
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
-
-		public HomeController(ILogger<HomeController> logger)
+		/// <summary>
+		/// Home画面の表示
+		/// </summary>
+		/// <param name="approvedUnreadPageIndexNum">承認済み未読情報画面のページ番号</param>
+		/// <param name="requiringApprovalPageIndexNum">承認必要情報画面のページ番号</param>
+		/// <returns></returns>
+		public IActionResult Home(string approvedUnreadPageIndexNum, string requiringApprovalPageIndexNum)
 		{
-			_logger = logger;
-		}
+			HomeViewModel homeViewModel = new HomeViewModel();
 
+			//セッションに記録されているユーザID
+			string userId = HttpContext.User.Claims.First().Value;
 
-		public IActionResult Index()
-		{
+			homeViewModel = HomeModel.CreateViewModel(homeViewModel, userId, approvedUnreadPageIndexNum, requiringApprovalPageIndexNum);
+			ViewData.Model = homeViewModel;
+
 			return View();
 		}
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
-
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
-
-
-
-		public IActionResult Login()
-		{
-			return View();
-		}
 	}
 }

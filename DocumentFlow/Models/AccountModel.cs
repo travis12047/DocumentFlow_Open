@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using System.Collections;
-using DocumentFlow.Profile;
 using DocumentFlow.Models.DB.DTO;
 using DocumentFlow.Models.DB.DAO;
 using Microsoft.AspNetCore.Authorization;
+using DocumentFlow.Models.CommonModels;
 
 namespace DocumentFlow.Models
 {
@@ -26,14 +26,7 @@ namespace DocumentFlow.Models
 			//ユーザ情報を取得
 			List<ArrayList> dataTableToList = AccountDAO.GetSingleUser(name, pass);
 
-
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.AddProfile<AutoMapperConfig>();
-			});
-
-			var mapper = config.CreateMapper();
-
+			IMapper mapper = CommonModel.CreateMapper();
 			var mapperList = mapper.Map<List<ArrayList>, List<M_UserDTO>>(dataTableToList);
 
 			//レコード件数が1件だった場合、UserIDをセット
@@ -41,7 +34,6 @@ namespace DocumentFlow.Models
 			{
 				userId = mapperList[0].m_user_id;
 			}
-
 
 			return userId;
 		}

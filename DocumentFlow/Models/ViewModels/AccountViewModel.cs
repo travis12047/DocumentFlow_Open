@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DocumentFlow.Models.ViewModels
 {
 	/// <summary>
-	/// Account機能のViewModel
+	/// ログイン画面のViewModel
 	/// </summary>
 	public class AccountViewModel
 	{

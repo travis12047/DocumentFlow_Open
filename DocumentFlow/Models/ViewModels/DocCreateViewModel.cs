@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DocumentFlow.Models.ViewModels
 {
 	/// <summary>
-	/// DocCreate機能のViewModel
+	/// ドキュメント作成・閲覧画面のViewModel
 	/// </summary>
 	public class DocCreateViewModel
     {

@@ -4,14 +4,10 @@
 	ViewData["Title"] = "検索";
 	
 	var searchResults = Model.searchResults;
-	var pageLastNum = Model.pageLastNum;
-	var pageIndexNum = Model.pageIndexNum;
-	var limitNum = Model.limitNum;
-	var maxPageNum = Model.maxPageNum;
-	var minPageNum = Model.minPageNum;
 	var searchCondTitle = Model.searchCondTitle;
 	var searchCondApprovalStatus = Model.searchCondApprovalStatus;
 	var searchCondApprovalStatusList = Model.searchCondApprovalStatusList;
+	var pagingItem = Model.pagingItem;
 }
 
 <h4>
@@ -54,11 +50,22 @@
 <div class="row g-3">
 	<div class="col-md-12">
 		@{
+			if (pagingItem.minPageNum > 1)
+			{
+				<a asp-action="Search"
+				   asp-route-pageNum=1
+				   asp-route-limitNum=@pagingItem.limitNum
+				   asp-route-searchCondTitle=@searchCondTitle
+				   asp-route-searchCondApprovalStatus=@searchCondApprovalStatus>
+					1
+				</a>
+				<span>..</span>
+			}
 			//ページリンク作成エリア
-			for (int i = (int)minPageNum; i < maxPageNum; i++)
+			for (int i = (int)pagingItem.minPageNum; i < pagingItem.maxPageNum; i++)
 			{
 				//表示中のページの場合、テキストとして表示
-				if (i == pageIndexNum)
+				if (i == pagingItem.pageIndexNum)
 				{
 					@i
 				}
@@ -67,12 +74,23 @@
 				{
 					<a asp-action="Search"
 					   asp-route-pageNum=@i
-					   asp-route-limitNum=@limitNum
+					   asp-route-limitNum=@pagingItem.limitNum
 					   asp-route-searchCondTitle=@searchCondTitle
 					   asp-route-searchCondApprovalStatus=@searchCondApprovalStatus>
 						@i
 					</a>
 				}
+			}
+			if (pagingItem.maxPageNum != pagingItem.pageLastNum)
+			{
+				<span>..</span>
+				<a asp-action="Search"
+				   asp-route-pageNum=@(pagingItem.pageLastNum - 1)
+				   asp-route-limitNum=@pagingItem.limitNum
+				   asp-route-searchCondTitle=@searchCondTitle
+				   asp-route-searchCondApprovalStatus=@searchCondApprovalStatus>
+					@(pagingItem.pageLastNum - 1)
+				</a>
 			}
 		}
 	</div>

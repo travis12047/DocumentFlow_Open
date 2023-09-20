@@ -3,7 +3,7 @@
 namespace DocumentFlow.Models.DB.DAO
 {
 	/// <summary>
-	/// DocCreate機能のDAOクラス
+	/// ドキュメント作成・閲覧画面のDAOクラス
 	/// </summary>
 	public class DocCreateDAO
 	{
